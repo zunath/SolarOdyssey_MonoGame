@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
@@ -15,20 +17,25 @@ namespace SolarOdyssey.System.Update
         private TimeSpan _gunTimer;
         private readonly TimeSpan _gunDelay;
         private readonly Viewport _viewport;
+        private ContentManager _content;
+        private SoundEffect _gunSound;
 
         public PlayerInputSystem(
             EntityFactory entityFactory,
-            Viewport viewport) 
+            Viewport viewport,
+            ContentManager content) 
             : base(Aspect.All(typeof(PlayerComponent), typeof(Transform2)))
         {
             _entityFactory = entityFactory;
             _gunDelay = TimeSpan.FromMilliseconds(100);
             _gunTimer = TimeSpan.Zero;
             _viewport = viewport;
+            _content = content;
         }
 
         public override void Initialize(IComponentMapperService mapperService)
         {
+            _gunSound = _content.Load<SoundEffect>("Sound/1");
         }
 
         public override void Process(GameTime gameTime, int entityId)
@@ -77,11 +84,13 @@ namespace SolarOdyssey.System.Update
                 {
                     _gunTimer = TimeSpan.Zero;
 
-                    var bullet = _entityFactory.CreateBullet();
+                    var bullet = _entityFactory.CreateBullet(entityId);
                     var bulletTransform = bullet.Get<Transform2>();
                     var bulletPhysics = bullet.Get<PhysicsComponent>();
                     bulletTransform.Position = transform.WorldPosition + new Vector2(13, -18);
                     bulletPhysics.SpeedY = -10;
+
+                    _gunSound.Play();
                 }
             }
 

@@ -34,7 +34,7 @@ namespace SolarOdyssey.System.Update
         public override void Process(GameTime gameTime, int entityId)
         {
             if (_lifeBar == null)
-                _lifeBar = _entityFactory.CreateLifeBar(10, _viewport.Height-20);
+                _lifeBar = _entityFactory.CreateLifeBar(10, _viewport.Height-20, 8.0f, 0.6f);
 
             var player = GetEntity(entityId);
             var health = player.Get<HealthComponent>();

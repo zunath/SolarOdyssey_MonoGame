@@ -9,7 +9,7 @@ using SolarOdyssey.Component;
 
 namespace SolarOdyssey.System.Render
 {
-    public class RenderSystem: EntityDrawSystem
+    internal class RenderSystem: EntityDrawSystem
     {
         private readonly SpriteBatch _spriteBatch;
         private readonly Dictionary<string, Texture2D> _textures;

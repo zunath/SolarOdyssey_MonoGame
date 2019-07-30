@@ -20,7 +20,6 @@ namespace SolarOdyssey
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
         }
 
         protected override void LoadContent()
@@ -29,14 +28,17 @@ namespace SolarOdyssey
             _entityFactory = new EntityFactory(GraphicsDevice.Viewport);
             _world = new WorldBuilder()
                 // Updates
-                .AddSystem(new PlayerInputSystem(_entityFactory, GraphicsDevice.Viewport))
+                .AddSystem(new PlayerInputSystem(_entityFactory, GraphicsDevice.Viewport, Content))
                 .AddSystem(new MovementSystem())
                 .AddSystem(new ExpirationSystem())
                 .AddSystem(new HudSystem(_entityFactory, GraphicsDevice.Viewport))
-
+                .AddSystem(new EnemySpawnSystem(GraphicsDevice.Viewport, _entityFactory))
+                .AddSystem(new CollisionSystem(_entityFactory))
+                
                 // Draws
                 .AddSystem(new BackgroundSystem(Content, _spriteBatch))
                 .AddSystem(new RenderSystem(_spriteBatch, Content))
+                .AddSystem(new CollisionRenderSystem(_spriteBatch))
                 .Build();
             _entityFactory.World = _world;
             _entityFactory.CreatePlayer();
@@ -50,12 +52,6 @@ namespace SolarOdyssey
         protected override void Update(GameTime gameTime)
         {
             _world.Update(gameTime);
-
-            var keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                Exit();
-
             base.Update(gameTime);
         }
 
