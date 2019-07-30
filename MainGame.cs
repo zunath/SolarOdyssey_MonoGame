@@ -43,7 +43,7 @@ namespace SolarOdyssey
                 .AddSystem(new CollisionSystem(_entityFactory))
                 .AddSystem(new LifeSystem())
                 .AddSystem(new InvulnerabilitySystem())
-                .AddSystem(new EnemyAISystem(_random))
+                .AddSystem(new EnemyAISystem(_random, _entityFactory))
                 .AddSystem(new CameraSystem(_camera))
                 
                 // Draws

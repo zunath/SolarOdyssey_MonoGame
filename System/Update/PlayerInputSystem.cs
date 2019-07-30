@@ -13,8 +13,6 @@ namespace SolarOdyssey.System.Update
     internal class PlayerInputSystem: EntityProcessingSystem
     {
         private readonly EntityFactory _entityFactory;
-        private TimeSpan _gunTimer;
-        private readonly TimeSpan _gunDelay;
         private readonly ContentManager _content;
         private SoundEffect _gunSound;
 
@@ -24,8 +22,6 @@ namespace SolarOdyssey.System.Update
             : base(Aspect.All(typeof(PlayerComponent)))
         {
             _entityFactory = entityFactory;
-            _gunDelay = TimeSpan.FromMilliseconds(100);
-            _gunTimer = TimeSpan.Zero;
             _content = content;
         }
 
@@ -63,13 +59,14 @@ namespace SolarOdyssey.System.Update
             var keyboard = Keyboard.GetState();
             var entity = GetEntity(entityId);
             var transform = entity.Get<Transform2>();
+            var shoot = entity.Get<ShootComponent>();
 
             if (keyboard.IsKeyDown(Keys.Space) || keyboard.IsKeyDown(Keys.Enter))
             {
-                _gunTimer += gameTime.ElapsedGameTime;
-                if (_gunTimer >= _gunDelay)
+                shoot.Timer += gameTime.ElapsedGameTime;
+                if (shoot.Timer >= shoot.Delay)
                 {
-                    _gunTimer = TimeSpan.Zero;
+                    shoot.Timer = TimeSpan.Zero;
 
                     var bullet = _entityFactory.CreateBullet(entityId);
                     var bulletTransform = bullet.Get<Transform2>();

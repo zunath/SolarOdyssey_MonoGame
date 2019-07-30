@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using MonoGame.Extended.Entities;
 using SolarOdyssey.Component;
@@ -28,6 +29,7 @@ namespace SolarOdyssey
             entity.Attach(new CollisionComponent(new Rectangle(0, 0, 44, 36)){IsVisible = true});
             entity.Attach(new LinkedEntityComponent());
             entity.Attach(new InvulnerabilityComponent(500));
+            entity.Attach(new ShootComponent(TimeSpan.FromMilliseconds(100)));
 
             return entity;
         }
@@ -77,6 +79,7 @@ namespace SolarOdyssey
             entity.Attach(new CollisionComponent(new Rectangle(0, 0, 46, 45)){IsVisible = true});
             entity.Attach(new LinkedEntityComponent());
             entity.Attach(new TouchDamageComponent(2));
+            entity.Attach(new ShootComponent(TimeSpan.FromMilliseconds(500)));
 
             return entity;
         }

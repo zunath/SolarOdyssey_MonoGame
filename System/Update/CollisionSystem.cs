@@ -47,7 +47,8 @@ namespace SolarOdyssey.System.Update
                     var bulletID = bullets[bulletIndex];
                     var bullet = GetEntity(bulletID);
                     var bulletComponent = bullet.Get<BulletComponent>();
-                    if (bulletComponent.OwnerID == enemyID) continue;
+                    var ownerEntity = GetEntity(bulletComponent.OwnerID);
+                    if (ownerEntity == null || ownerEntity.Has<EnemyComponent>()) continue;
 
                     var bulletCollisionBox = GetCollisionBox(bullet);
                     var bulletTouchDamage = bullet.Get<TouchDamageComponent>();
@@ -107,9 +108,16 @@ namespace SolarOdyssey.System.Update
                 foreach (var bulletID in bullets)
                 {
                     var bullet = GetEntity(bulletID);
-                    if (bullet.Get<BulletComponent>().OwnerID == playerID) continue;
+                    var ownerEntity = GetEntity(bullet.Get<BulletComponent>().OwnerID);
+                    if (ownerEntity == null || ownerEntity.Has<PlayerComponent>()) continue;
+                    var bulletCollisionBox = GetCollisionBox(bullet);
 
-
+                    if(playerCollisionBox.Intersects(bulletCollisionBox))
+                    {
+                        var touchDamage = bullet.Get<TouchDamageComponent>();
+                        playerHealth.Current -= touchDamage.Amount;
+                        playerInvulnerability.Current = TimeSpan.Zero;
+                    }
                 }
             }
         }
