@@ -17,7 +17,7 @@ namespace SolarOdyssey.System.Update
         private TimeSpan _gunTimer;
         private readonly TimeSpan _gunDelay;
         private readonly Viewport _viewport;
-        private ContentManager _content;
+        private readonly ContentManager _content;
         private SoundEffect _gunSound;
 
         public PlayerInputSystem(

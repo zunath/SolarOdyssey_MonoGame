@@ -55,7 +55,7 @@ namespace SolarOdyssey.System.Render
                 _spriteBatch.Draw(texture, 
                     vector, 
                     null, 
-                    Color.White, 
+                    color, 
                     0.0f, 
                     Vector2.Zero, 
                     new Vector2(renderable.ScaleX, renderable.ScaleY), 

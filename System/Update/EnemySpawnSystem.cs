@@ -27,8 +27,8 @@ namespace SolarOdyssey.System.Update
             var x = _random.Next(10, _viewport.Width-10);
             var y = _random.Next(0, _viewport.Height/2);
             var enemy = _entityFactory.CreateEnemy(x, y);
-            var lifeBar = _entityFactory.CreateLifeBar(x, y + 45, 0.48f, 0.3f, 0.2f);
-            var life = _entityFactory.CreateLife(x+5, y + 46, 0.48f, 0.3f, 0.2f);
+            var lifeBar = _entityFactory.CreateLifeBar(x, y + 45, 0.48f, 0.3f, 0.5f);
+            var life = _entityFactory.CreateLife(x+5, y + 46, 0.48f, 0.3f, 0.5f);
 
             var entityList = enemy.Get<LinkedEntityComponent>();
             entityList.EntityIDs.Add(lifeBar.Id);

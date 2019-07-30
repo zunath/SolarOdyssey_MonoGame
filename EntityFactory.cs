@@ -29,6 +29,7 @@ namespace SolarOdyssey
             entity.Attach(new RenderableComponent("Ship/6b", false, true));
             entity.Attach(new CollisionComponent(new Rectangle(0, 0, 44, 36)){IsVisible = true});
             entity.Attach(new LinkedEntityComponent());
+            entity.Attach(new InvulnerabilityComponent(1000));
 
             return entity;
         }
@@ -42,6 +43,7 @@ namespace SolarOdyssey
             entity.Attach(new PhysicsComponent());
             entity.Attach(new CollisionComponent(new Rectangle(0, 0, 16, 16)){ IsVisible = true});
             entity.Attach(new BulletComponent(ownerID));
+            entity.Attach(new TouchDamageComponent(1));
 
             return entity;
         }
@@ -75,6 +77,7 @@ namespace SolarOdyssey
             entity.Attach(new RenderableComponent("Ship/3", false, false));
             entity.Attach(new CollisionComponent(new Rectangle(0, 0, 46, 45)){IsVisible = true});
             entity.Attach(new LinkedEntityComponent());
+            entity.Attach(new TouchDamageComponent(2));
 
             return entity;
         }
@@ -84,7 +87,7 @@ namespace SolarOdyssey
             var entity = World.CreateEntity();
             entity.Attach(new Transform2(positionX, positionY));
             entity.Attach(new RenderableComponent("Fx/Explosion1", false, false));
-            entity.Attach(new ExpiresComponent(1000));
+            entity.Attach(new ExpiresComponent(500));
 
             return entity;
         }

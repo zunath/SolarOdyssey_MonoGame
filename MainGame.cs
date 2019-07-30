@@ -35,6 +35,7 @@ namespace SolarOdyssey
                 .AddSystem(new EnemySpawnSystem(GraphicsDevice.Viewport, _entityFactory))
                 .AddSystem(new CollisionSystem(_entityFactory))
                 .AddSystem(new LifeSystem())
+                .AddSystem(new InvulnerabilitySystem())
                 
                 // Draws
                 .AddSystem(new BackgroundSystem(Content, _spriteBatch))
