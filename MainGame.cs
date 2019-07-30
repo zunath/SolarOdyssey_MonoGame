@@ -25,6 +25,7 @@ namespace SolarOdyssey
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             _random = new Random();
+            Window.AllowUserResizing = true;
         }
 
         protected override void LoadContent()

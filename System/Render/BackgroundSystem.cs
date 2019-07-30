@@ -36,9 +36,9 @@ namespace SolarOdyssey.System.Render
             int xOffset = (int)(_camera.Position.X / backgroundWidth);
             int yOffset = (int) (_camera.Position.Y / backgroundHeight);
 
-            for (int x = xOffset-1; x <= xOffset+2; x++)
+            for (int x = xOffset-3; x <= xOffset+3; x++)
             {
-                for (int y = yOffset-1; y <= yOffset+2; y++)
+                for (int y = yOffset-3; y <= yOffset+3; y++)
                 {
                     var position = new Vector2(backgroundWidth * x, backgroundHeight * y);
                     
