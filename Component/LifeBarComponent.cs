@@ -1,11 +1,11 @@
 ﻿namespace SolarOdyssey.Component
 {
-    internal class LifeComponent
+    internal class LifeBarComponent
     {
         public int OffsetX { get; set; }
         public int OffsetY { get; set; }
 
-        public LifeComponent(int offsetX, int offsetY)
+        public LifeBarComponent(int offsetX, int offsetY)
         {
             OffsetX = offsetX;
             OffsetY = offsetY;

@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using MonoGame.Extended.Entities;
 using SolarOdyssey.System;
 using SolarOdyssey.System.Render;
@@ -10,32 +12,38 @@ namespace SolarOdyssey
 {
     public class MainGame : Game
     {
-        private GraphicsDeviceManager _graphicsDeviceManager;
+        private readonly GraphicsDeviceManager _graphicsDeviceManager;
         private SpriteBatch _spriteBatch;
         private World _world;
         private EntityFactory _entityFactory;
+        private readonly Random _random;
+        private OrthographicCamera _camera;
 
         public MainGame()
         {
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _random = new Random();
         }
 
         protected override void LoadContent()
         {
+            _camera = new OrthographicCamera(_graphicsDeviceManager.GraphicsDevice);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _entityFactory = new EntityFactory(GraphicsDevice.Viewport);
+            _entityFactory = new EntityFactory(_camera);
             _world = new WorldBuilder()
                 // Updates
-                .AddSystem(new PlayerInputSystem(_entityFactory, GraphicsDevice.Viewport, Content))
+                .AddSystem(new PlayerInputSystem(_entityFactory, Content))
                 .AddSystem(new MovementSystem())
                 .AddSystem(new ExpirationSystem())
-                .AddSystem(new HudSystem(_entityFactory, GraphicsDevice.Viewport))
-                .AddSystem(new EnemySpawnSystem(GraphicsDevice.Viewport, _entityFactory))
+                .AddSystem(new HudSystem(_entityFactory, _camera))
+                .AddSystem(new EnemySpawnSystem(_camera, _entityFactory, _random))
                 .AddSystem(new CollisionSystem(_entityFactory))
                 .AddSystem(new LifeSystem())
                 .AddSystem(new InvulnerabilitySystem())
+                .AddSystem(new EnemyAISystem(_random))
+                .AddSystem(new CameraSystem(_camera))
                 
                 // Draws
                 .AddSystem(new BackgroundSystem(Content, _spriteBatch))
@@ -59,7 +67,8 @@ namespace SolarOdyssey
 
         protected override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            var transformMatrix = _camera.GetViewMatrix();
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: transformMatrix);
             GraphicsDevice.Clear(Color.Black);
             _world.Draw(gameTime);
             _spriteBatch.End();

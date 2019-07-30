@@ -16,15 +16,15 @@ namespace SolarOdyssey.System.Update
         private Entity _lifeBar;
         private Entity _life;
         private readonly EntityFactory _entityFactory;
-        private readonly Viewport _viewport;
+        private readonly OrthographicCamera _camera;
 
         public HudSystem(
             EntityFactory entityFactory,
-            Viewport viewport) 
+            OrthographicCamera camera) 
             : base(Aspect.All(typeof(PlayerComponent)))
         {
             _entityFactory = entityFactory;
-            _viewport = viewport;
+            _camera = camera;
         }
         
         public override void Initialize(IComponentMapperService mapperService)
@@ -34,16 +34,18 @@ namespace SolarOdyssey.System.Update
         public override void Process(GameTime gameTime, int entityId)
         {
             if (_lifeBar == null)
-                _lifeBar = _entityFactory.CreateLifeBar(10, _viewport.Height-20, 8.0f, 0.6f);
-
-            var player = GetEntity(entityId);
-            var health = player.Get<HealthComponent>();
-
+                _lifeBar = _entityFactory.CreateLifeBar(_camera.BoundingRectangle.X + 10, _camera.BoundingRectangle.Height-20, 8.0f, 0.6f);
             if (_life == null)
-                _life = _entityFactory.CreateLife(80, _viewport.Height-16, 8.0f, 0.6f);
-
+                _life = _entityFactory.CreateLife(_camera.BoundingRectangle.X + 80, _camera.BoundingRectangle.Height-16, 8.0f, 0.6f);
+            
+            var player = GetEntity(entityId);
+            var playerHealth = player.Get<HealthComponent>();
+            var playerPhysics = player.Get<PhysicsComponent>();
             var lifeRenderable = _life.Get<RenderableComponent>();
-            lifeRenderable.ScaleX = 8.0f * ((float) health.Current / (float) health.Maximum);
+            lifeRenderable.ScaleX = 8.0f * ((float) playerHealth.Current / (float) playerHealth.Maximum);
+
+            _lifeBar.Get<Transform2>().Position = new Vector2(_camera.BoundingRectangle.Left + 10 + playerPhysics.SpeedX, _camera.BoundingRectangle.Bottom-20 + playerPhysics.SpeedY);
+            _life.Get<Transform2>().Position = new Vector2(_camera.BoundingRectangle.Left + 80 + playerPhysics.SpeedX, _camera.BoundingRectangle.Bottom-16 + playerPhysics.SpeedY);
         }
     }
 }

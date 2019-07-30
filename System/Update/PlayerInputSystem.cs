@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.Entities;
@@ -16,20 +15,17 @@ namespace SolarOdyssey.System.Update
         private readonly EntityFactory _entityFactory;
         private TimeSpan _gunTimer;
         private readonly TimeSpan _gunDelay;
-        private readonly Viewport _viewport;
         private readonly ContentManager _content;
         private SoundEffect _gunSound;
 
         public PlayerInputSystem(
             EntityFactory entityFactory,
-            Viewport viewport,
             ContentManager content) 
-            : base(Aspect.All(typeof(PlayerComponent), typeof(Transform2)))
+            : base(Aspect.All(typeof(PlayerComponent)))
         {
             _entityFactory = entityFactory;
             _gunDelay = TimeSpan.FromMilliseconds(100);
             _gunTimer = TimeSpan.Zero;
-            _viewport = viewport;
             _content = content;
         }
 
@@ -48,7 +44,6 @@ namespace SolarOdyssey.System.Update
         {
             var keyboard = Keyboard.GetState();
             var entity = GetEntity(entityId);
-            var transform = entity.Get<Transform2>();
             var physics = entity.Get<PhysicsComponent>();
             physics.SpeedX = 0;
             physics.SpeedY = 0;
@@ -61,14 +56,6 @@ namespace SolarOdyssey.System.Update
                 physics.SpeedY = -5;
             if (keyboard.IsKeyDown(Keys.S))
                 physics.SpeedY = 5;
-
-            // Don't change speed if player is trying to go off-screen.
-            Vector2 position = transform.Position;
-            if (position.X < 0 && physics.SpeedX < 0) physics.SpeedX = 0;
-            else if (position.X > _viewport.Width - 40 && physics.SpeedX > 0) physics.SpeedX = 0;
-
-            if (position.Y < 0 && physics.SpeedY < 0) physics.SpeedY = 0;
-            else if (position.Y > _viewport.Height - 62 && physics.SpeedY > 0) physics.SpeedY = 0;
         }
 
         private void Actions(GameTime gameTime, int entityId)
