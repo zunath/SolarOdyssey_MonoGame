@@ -7,6 +7,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Entities;
 using MonoGame.Extended.Entities.Systems;
 using SolarOdyssey.Component;
+using SolarOdyssey.System.Update;
 
 namespace SolarOdyssey.System.Render
 {
@@ -31,7 +32,7 @@ namespace SolarOdyssey.System.Render
                 var entity = GetEntity(entityID);
                 var collision = entity.Get<CollisionComponent>();
 
-                if(!collision.IsVisible) continue;
+                if(!DebugSystem.IsDebugActive) continue;
 
                 var transform = entity.Get<Transform2>();
                 var drawPosition = new Rectangle(

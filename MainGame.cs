@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.Entities;
+using MonoGame.Extended.ViewportAdapters;
 using SolarOdyssey.System;
 using SolarOdyssey.System.Render;
 using SolarOdyssey.System.Update;
@@ -30,7 +31,7 @@ namespace SolarOdyssey
 
         protected override void LoadContent()
         {
-            _camera = new OrthographicCamera(_graphicsDeviceManager.GraphicsDevice);
+            _camera = new OrthographicCamera(new BoxingViewportAdapter(Window, GraphicsDevice, 800, 400));
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _entityFactory = new EntityFactory(_camera);
             _world = new WorldBuilder()
@@ -45,6 +46,7 @@ namespace SolarOdyssey
                 .AddSystem(new InvulnerabilitySystem())
                 .AddSystem(new EnemyAISystem(_random, _entityFactory))
                 .AddSystem(new CameraSystem(_camera))
+                .AddSystem(new DebugSystem())
                 
                 // Draws
                 .AddSystem(new BackgroundSystem(Content, _spriteBatch, _camera))
