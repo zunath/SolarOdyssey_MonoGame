@@ -14,6 +14,7 @@ namespace SolarOdyssey
         private SpriteBatch _spriteBatch;
         private World _world;
         private EntityFactory _entityFactory;
+        private static Entity _player;
 
         public MainGame()
         {
@@ -33,10 +34,11 @@ namespace SolarOdyssey
                 .AddSystem(new PlayerInputSystem(_entityFactory))
                 .AddSystem(new MovementSystem())
                 .AddSystem(new ExpirationSystem())
+                .AddSystem(new HudSystem(_entityFactory, GraphicsDevice.Viewport))
                 .Build();
             _entityFactory.World = _world;
 
-            _entityFactory.CreatePlayer();
+            _player = _entityFactory.CreatePlayer();
         }
 
         protected override void UnloadContent()

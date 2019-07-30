@@ -56,7 +56,7 @@ namespace SolarOdyssey.System.Render
                     Color.White, 
                     0.0f, 
                     Vector2.Zero, 
-                    Vector2.One, 
+                    new Vector2(renderable.ScaleX, renderable.ScaleY), 
                     flipEffects, 
                     0.0f);
             }
