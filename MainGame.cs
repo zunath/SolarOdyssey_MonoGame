@@ -14,7 +14,6 @@ namespace SolarOdyssey
         private SpriteBatch _spriteBatch;
         private World _world;
         private EntityFactory _entityFactory;
-        private static Entity _player;
 
         public MainGame()
         {
@@ -29,16 +28,18 @@ namespace SolarOdyssey
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _entityFactory = new EntityFactory(GraphicsDevice.Viewport);
             _world = new WorldBuilder()
-                .AddSystem(new BackgroundSystem(Content, _spriteBatch))
-                .AddSystem(new RenderSystem(_spriteBatch, Content))
-                .AddSystem(new PlayerInputSystem(_entityFactory))
+                // Updates
+                .AddSystem(new PlayerInputSystem(_entityFactory, GraphicsDevice.Viewport))
                 .AddSystem(new MovementSystem())
                 .AddSystem(new ExpirationSystem())
                 .AddSystem(new HudSystem(_entityFactory, GraphicsDevice.Viewport))
+
+                // Draws
+                .AddSystem(new BackgroundSystem(Content, _spriteBatch))
+                .AddSystem(new RenderSystem(_spriteBatch, Content))
                 .Build();
             _entityFactory.World = _world;
-
-            _player = _entityFactory.CreatePlayer();
+            _entityFactory.CreatePlayer();
         }
 
         protected override void UnloadContent()
@@ -61,7 +62,7 @@ namespace SolarOdyssey
         protected override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             _world.Draw(gameTime);
             _spriteBatch.End();
             base.Draw(gameTime);

@@ -34,13 +34,13 @@ namespace SolarOdyssey.System.Update
         public override void Process(GameTime gameTime, int entityId)
         {
             if (_lifeBar == null)
-                _lifeBar = _entityFactory.CreateLifeBar(10, _viewport.Height-30);
+                _lifeBar = _entityFactory.CreateLifeBar(10, _viewport.Height-20);
 
             var player = GetEntity(entityId);
             var health = player.Get<HealthComponent>();
 
             if (_life == null)
-                _life = _entityFactory.CreateLife(80, _viewport.Height-26);
+                _life = _entityFactory.CreateLife(80, _viewport.Height-16);
 
             var lifeRenderable = _life.Get<RenderableComponent>();
             lifeRenderable.ScaleX = 8.0f * ((float) health.Current / (float) health.Maximum);
