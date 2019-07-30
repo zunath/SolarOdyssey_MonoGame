@@ -28,6 +28,7 @@ namespace SolarOdyssey
             entity.Attach(new PlayerComponent());
             entity.Attach(new RenderableComponent("Ship/6b", false, true));
             entity.Attach(new CollisionComponent(new Rectangle(0, 0, 44, 36)){IsVisible = true});
+            entity.Attach(new LinkedEntityComponent());
 
             return entity;
         }
@@ -45,20 +46,21 @@ namespace SolarOdyssey
             return entity;
         }
 
-        public Entity CreateLifeBar(float x, float y, float scaleX, float scaleY)
+        public Entity CreateLifeBar(float x, float y, float scaleX, float scaleY, float opacity = 1.0f)
         {
             var entity = World.CreateEntity();
             entity.Attach(new Transform2(x, y));
-            entity.Attach(new RenderableComponent("HUD/HealthBar", false, false) { ScaleX = scaleX, ScaleY = scaleY});
+            entity.Attach(new RenderableComponent("HUD/HealthBar", false, false) { ScaleX = scaleX, ScaleY = scaleY, Opacity = opacity});
 
             return entity;
         }
 
-        public Entity CreateLife(float x, float y)
+        public Entity CreateLife(float x, float y, float scaleX, float scaleY, float opacity = 1.0f)
         {
             var entity = World.CreateEntity();
             entity.Attach(new Transform2(x, y));
-            entity.Attach(new RenderableComponent("HUD/HealthBarColor", false, false) { ScaleX = 8.0f, ScaleY = 0.6f});
+            entity.Attach(new RenderableComponent("HUD/HealthBarColor", false, false) { ScaleX = scaleX, ScaleY = scaleY, Opacity = opacity});
+            entity.Attach(new LifeComponent());
 
             return entity;
         }
@@ -72,6 +74,7 @@ namespace SolarOdyssey
             entity.Attach(new EnemyComponent());
             entity.Attach(new RenderableComponent("Ship/3", false, false));
             entity.Attach(new CollisionComponent(new Rectangle(0, 0, 46, 45)){IsVisible = true});
+            entity.Attach(new LinkedEntityComponent());
 
             return entity;
         }

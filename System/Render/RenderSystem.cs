@@ -50,6 +50,8 @@ namespace SolarOdyssey.System.Render
                 else if (renderable.FlipVertical)
                     flipEffects = SpriteEffects.FlipVertically;
 
+                Color color = new Color(Color.White, renderable.Opacity);
+
                 _spriteBatch.Draw(texture, 
                     vector, 
                     null, 

@@ -40,7 +40,7 @@ namespace SolarOdyssey.System.Update
             var health = player.Get<HealthComponent>();
 
             if (_life == null)
-                _life = _entityFactory.CreateLife(80, _viewport.Height-16);
+                _life = _entityFactory.CreateLife(80, _viewport.Height-16, 8.0f, 0.6f);
 
             var lifeRenderable = _life.Get<RenderableComponent>();
             lifeRenderable.ScaleX = 8.0f * ((float) health.Current / (float) health.Maximum);

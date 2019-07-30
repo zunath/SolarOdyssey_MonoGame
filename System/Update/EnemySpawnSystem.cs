@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.Entities;
 using MonoGame.Extended.Entities.Systems;
+using SolarOdyssey.Component;
 
 namespace SolarOdyssey.System.Update
 {
@@ -24,9 +24,15 @@ namespace SolarOdyssey.System.Update
         {
             if (_enemyCount >= 5) return;
 
-            int x = _random.Next(10, _viewport.Width-10);
-            int y = _random.Next(0, _viewport.Height/2);
-            _entityFactory.CreateEnemy(x, y);
+            var x = _random.Next(10, _viewport.Width-10);
+            var y = _random.Next(0, _viewport.Height/2);
+            var enemy = _entityFactory.CreateEnemy(x, y);
+            var lifeBar = _entityFactory.CreateLifeBar(x, y + 45, 0.48f, 0.3f, 0.2f);
+            var life = _entityFactory.CreateLife(x+5, y + 46, 0.48f, 0.3f, 0.2f);
+
+            var entityList = enemy.Get<LinkedEntityComponent>();
+            entityList.EntityIDs.Add(lifeBar.Id);
+            entityList.EntityIDs.Add(life.Id);
 
             _enemyCount++;
         }

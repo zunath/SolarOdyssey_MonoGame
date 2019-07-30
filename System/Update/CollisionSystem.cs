@@ -33,6 +33,7 @@ namespace SolarOdyssey.System.Update
                 var enemy = GetEntity(enemyID);
                 var enemyCollisionBox = GetCollisionBox(enemy);
                 var enemyPosition = enemy.Get<Transform2>().Position;
+                var entityList = enemy.Get<LinkedEntityComponent>();
 
                 foreach(var bulletID in bullets)
                 {
@@ -49,6 +50,13 @@ namespace SolarOdyssey.System.Update
                         if (health.Current <= 0)
                         {
                             _entityFactory.CreateExplosion(enemyPosition.X, enemyPosition.Y);
+
+                            // Remove all attached entities (life, life bar).
+                            foreach (var entityID in entityList.EntityIDs)
+                            {
+                                GetEntity(entityID).Destroy();
+                            }
+
                             enemy.Destroy();
                         }
 
