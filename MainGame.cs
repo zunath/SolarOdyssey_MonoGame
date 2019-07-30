@@ -46,7 +46,7 @@ namespace SolarOdyssey
                 .AddSystem(new CameraSystem(_camera))
                 
                 // Draws
-                .AddSystem(new BackgroundSystem(Content, _spriteBatch))
+                .AddSystem(new BackgroundSystem(Content, _spriteBatch, _camera))
                 .AddSystem(new RenderSystem(_spriteBatch, Content))
                 .AddSystem(new CollisionRenderSystem(_spriteBatch))
                 .Build();

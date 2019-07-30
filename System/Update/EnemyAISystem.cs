@@ -36,7 +36,7 @@ namespace SolarOdyssey.System.Update
 
             // Time for a new action.
             comp.CurrentActionTime = TimeSpan.Zero;
-            int actionID = _random.Next(3);
+            int actionID = _random.Next(4);
 
             Console.WriteLine("actionID = " + actionID);
 
@@ -68,6 +68,16 @@ namespace SolarOdyssey.System.Update
                     comp.CurrentAction = () =>
                     {
 
+                    };
+                    break;
+                // Do nothing.
+                case 3:
+                    comp.ActionLength = TimeSpan.FromMilliseconds(1500);
+                    comp.CurrentAction = () =>
+                    {
+                        var physics = enemy.Get<PhysicsComponent>();
+                        physics.SpeedX = 0;
+                        physics.SpeedY = 0;
                     };
                     break;
             }
